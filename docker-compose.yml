@@ -29,7 +29,7 @@ services:
       - "8082:8082"
     depends_on:
       - kafka
-      - discovery-server
+      - eureka-server
     environment:
       SPRING_PROFILES_ACTIVE: docker
 
@@ -41,7 +41,7 @@ services:
     depends_on:
       - product-service
       - kafka
-      - discovery-server
+      - eureka-server
     environment:
       SPRING_PROFILES_ACTIVE: docker
 
@@ -52,7 +52,7 @@ services:
       - "8083:8083"
     depends_on:
       - kafka
-      - discovery-server
+      - eureka-server
     environment:
       SPRING_PROFILES_ACTIVE: docker
   kafdrop:
@@ -71,8 +71,8 @@ services:
       - product-service
       - order-service
       - notification-service
-      - discovery-server
-  discovery-server:
-    build: ./discovery-server
+      - eureka-server
+  eureka-server:
+    build: ./eureka-server
     ports:
       - "8761:8761"
