@@ -1,0 +1,12 @@
+# IntelliJ
+*.iml
+.idea/
+
+# Build
+target/
+
+# Logs
+*.log
+
+# Docker
+*.env
