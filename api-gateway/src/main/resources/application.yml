@@ -7,23 +7,27 @@ spring:
 
   cloud:
     gateway:
-      routes:
-        - id: product-service
-          uri: lb://PRODUCT-SERVICE
-          predicates:
-            - Path=/rest/api/products/**
+      server:
+        webmvc:
+          routes:
+            - id: product-service
+              uri: http://product-service:8082
+              predicates:
+                - Path=/rest/api/products/**
 
-        - id: order-service
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/rest/api/orders/**
+            - id: order-service
+              uri: http://order-service:8081
+              predicates:
+                - Path=/rest/api/orders/**
 
-        - id: notification-service
-          uri: lb://NOTIFICATION-SERVICE
-          predicates:
-            - Path=/rest/api/notifications/**
+            - id: notification-service
+              uri: http://notification-service:8083
+              predicates:
+                - Path=/rest/api/notifications/**
 
 eureka:
   client:
     service-url:
       defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
