@@ -9,15 +9,21 @@ spring:
     gateway:
       routes:
         - id: product-service
-          uri: http://product-service:8082
+          uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/rest/api/products/**
+
         - id: order-service
-          uri: http://order-service:8081
+          uri: lb://ORDER-SERVICE
           predicates:
             - Path=/rest/api/orders/**
 
         - id: notification-service
-          uri: http://notification-service:8083
+          uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/rest/api/notifications/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka/

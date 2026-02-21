@@ -4,16 +4,19 @@ server:
 spring:
   application:
     name: order-service
+
   datasource:
     url: jdbc:h2:mem:orderdb
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
   h2:
     console:
       enabled: true
       path: /h2-console
       web-allow-others: true
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -32,3 +35,10 @@ resilience4j:
         minimum-number-of-calls: 3
         failure-rate-threshold: 50
         wait-duration-in-open-state: 10s
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
