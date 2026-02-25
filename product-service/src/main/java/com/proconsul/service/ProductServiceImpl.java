@@ -30,21 +30,26 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductDTO findById(Integer id) {
-        Product product= productRepository.findById(id).
+    public ProductDTO findById(Long id) {
+        Product product= productRepository.findById(Math.toIntExact(id)).
                 orElseThrow(()-> new ResourceNotFoundException("Product with id: "+id+" not found"));
         return objectMapper.convertValue(product,ProductDTO.class);
     }
 
     @Override
-    public ProductDTO decreaseStock(Integer id, Integer quantity) {
-        ProductDTO product = this.findById(id);
+    @Transactional
+    public ProductDTO decreaseStock(Long id, Integer quantity) {
+        Product product = productRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         if (product.getQuantity() < quantity) {
             throw new RuntimeException("Not enough stock");
         }
+
         product.setQuantity(product.getQuantity() - quantity);
-        this.save(product);
-        return product;
+
+        productRepository.save(product);
+
+        return objectMapper.convertValue(product, ProductDTO.class);
     }
 }

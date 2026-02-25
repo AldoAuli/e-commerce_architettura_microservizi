@@ -11,9 +11,9 @@ public interface ProductService {
 
     public Message save(ProductDTO productDTO);
 
-    public ProductDTO findById(Integer id);
+    public ProductDTO findById(Long id);
 
-    public ProductDTO decreaseStock(Integer id,Integer quantity);
+    public ProductDTO decreaseStock(Long id,Integer quantity);
 
 
 }

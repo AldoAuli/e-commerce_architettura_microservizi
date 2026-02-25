@@ -11,7 +11,14 @@ public class OrderProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void publishOrderEvent(OrderEvent event) {
-        kafkaTemplate.send("order.events", event);
+    private static final String TOPIC = "order.events";
+
+    public void sendOrderCreatedEvent(Long orderId,Long productId,Integer quantity) {
+
+        OrderEvent event = new OrderEvent(orderId,"CREATED",productId,quantity);
+
+        kafkaTemplate.send(TOPIC, event);
+
+        System.out.println("Order event sent for orderId: " + orderId);
     }
 }

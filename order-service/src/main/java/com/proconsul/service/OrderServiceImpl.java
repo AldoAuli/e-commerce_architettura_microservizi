@@ -23,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
 
     public Order createOrder(Long productId, Integer quantity) {
 
-        String baseUrl = "http://product-service:8082/rest/api/products/";
+        String baseUrl = "http://product-service/rest/api/products/";
 
         ResponseEntity<Product> response =
                 restTemplate.getForEntity(baseUrl + productId, Product.class);
@@ -40,14 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = new Order(null, productId, quantity, "CREATED");
         Order saved = repository.save(order);
-        OrderEvent event = new OrderEvent(
-                saved.getId(),
-                productId,
-                quantity,
-                "CREATED",
-                LocalDateTime.now()
-        );
-        producer.publishOrderEvent(event);
+        producer.sendOrderCreatedEvent(saved.getId(), productId, quantity);
 
         return saved;
     }

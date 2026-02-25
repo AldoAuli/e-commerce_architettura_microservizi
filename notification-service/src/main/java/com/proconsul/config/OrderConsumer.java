@@ -1,5 +1,6 @@
 package com.proconsul.config;
 
+import com.proconsul.DTO.OrderEvent;
 import com.proconsul.entity.NotificationLog;
 import com.proconsul.service.NotificationService;
 import lombok.AllArgsConstructor;
@@ -15,17 +16,17 @@ public class OrderConsumer {
     private final NotificationService notificationService;
 
     @KafkaListener(topics = "order.events", groupId = "notification-group")
-    public void consumeOrderEvent(String message) {
-        System.out.println("✅ Notification received: " + message);
+    public void consumeOrderEvent(OrderEvent event) {
 
-        // parsing semplice: "Order created: 1"
-        String[] parts = message.split(":");
-        Long orderId = Long.parseLong(parts[1].trim());
+        System.out.println("Notification received for order: " + event.getOrderId());
 
         NotificationLog notification = new NotificationLog();
-        notification.setOrderId(orderId);
+        notification.setOrderId(event.getOrderId());
         notification.setStatus("RECEIVED");
+        notification.setProductId(event.getProductId());
+        notification.setQuantity(event.getQuantity());
         notification.setCreatedAt(LocalDateTime.now());
+
         notificationService.saveNotification(notification);
     }
 }

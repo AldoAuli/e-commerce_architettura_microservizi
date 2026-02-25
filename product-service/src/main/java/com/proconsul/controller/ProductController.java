@@ -28,13 +28,13 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary="Cerca un prodotto per il suo ID")
-    public ProductDTO findById(@PathVariable Integer id){
+    public ProductDTO findById(@PathVariable Long id){
         return productService.findById(id);
     }
 
     @PutMapping("/{id}/decrease")
-    public ResponseEntity<ProductDTO> decreaseStock(@PathVariable Integer id, @RequestParam Integer quantity) {
-       productService.decreaseStock(id, quantity);
-       return new ResponseEntity<>(productService.findById(id), HttpStatus.OK);
+    public ResponseEntity<ProductDTO> decreaseStock(@PathVariable Long id, @RequestParam Integer quantity) {
+        ProductDTO updatedProduct = productService.decreaseStock(id, quantity);
+        return ResponseEntity.ok(updatedProduct);
     }
 }

@@ -23,7 +23,7 @@ public class OrderController {
         );
     }
 
-    public Order fallbackCreateOrder(Long productId, Integer quantity, Throwable throwable) {
-        throw new RuntimeException(throwable);
+    public Order fallbackCreateOrder(CreateOrderRequest request, Throwable throwable) {
+        throw new RuntimeException("Servizio prodotti non disponibile: " + throwable.getMessage());
     }
 }
